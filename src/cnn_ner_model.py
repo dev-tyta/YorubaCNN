@@ -23,15 +23,7 @@ class YorubaCNN(nn.Module):
 
 
     def forward(self, x):
-        print(f"Input shape: {x.shape}")
-        
-        x = self.embedding(x)
-        print(f"After embedding shape: {x.shape}")
-        
-        # Ensure x is 3D: [batch_size, embed_dim, seq_len]
-        if x.dim() == 4:
-            x = x.squeeze(1)
-        x = x.permute(0, 2, 1)
+        x = self.embedding(x).permute(0, 2, 1)
         print(f"After permute shape: {x.shape}")
         x = self.conv1(x)
         x = self.dropout(x)
@@ -56,11 +48,3 @@ class YorubaCNN(nn.Module):
         x = self.relu(x)
         x = self.fc2(x)
         return x
-
-
-# Model initialization
-vocab_size = 32000  # Number of tokens in the SentencePiece model
-embed_dim = 256
-num_classes = 9
-model = YorubaCNN(vocab_size, embed_dim, num_classes)
-model.eval()

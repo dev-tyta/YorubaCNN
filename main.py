@@ -1,13 +1,12 @@
 import torch
 import streamlit as st
 from src.model_loading import YorubaNerModel
-from src.data_handling import TextProcessing
 
 
 
 ner_model = YorubaNerModel()
 
-# Streamlit app
+
 def main():
     st.title("Yoruba Named Entity Recognition")
 
@@ -18,20 +17,14 @@ def main():
         if text:
             labels = ner_model.perform_ner(text)
             if labels:
-                entities = ner_model.get_entity_names(text, labels)
+                entities = ner_model.decode_label(labels)
                 for entity, entity_type in entities:
-                    print(f"{entity}: {entity_type}")
-            
-            # Display results
-            words = text.split()  # Simple tokenization, you might need a more sophisticated approach
-            for word, label in zip(words, labels):
-                entity_type = label_map[label]
-                if entity_type != 'O':
-                    st.markdown(f"**{word}** - *{entity_type}*")
-                else:
-                    st.write(word)
+                    st.write(f"{entity}: {entity_type}")
+            else:
+                st.write("No entities found.")
         else:
             st.write("Please enter some text.")
+
 
 if __name__ == "__main__":
     main()

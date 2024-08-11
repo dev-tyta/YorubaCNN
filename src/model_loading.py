@@ -1,5 +1,5 @@
 import torch
-from cnn_ner_model import YorubaCNN  
+from cnn_yor_ner import YorubaCNN  
 from data_handling import TextProcessing  
 
 class YorubaNerModel:
